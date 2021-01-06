@@ -1,0 +1,28 @@
+---
+- name: Config bash
+  hosts: localhost
+  gather_facts: yes
+  become: no
+  vars:
+    bashrc: "{{ ansible_env.HOME }}/.bashrc"
+
+  tasks:
+    - name: Install required packages
+      package:
+        name:
+          - bash
+          - bash-completion
+          - bash-doc
+        state: installed
+      become: yes
+      tags:
+        - install_packages
+
+    - name: copy over bashrc files
+      copy:
+        src: bashrc
+        dest: "{{ bashrc }}"
+        backup: yes
+        mode: 640
+        tags:
+          - copy_files
