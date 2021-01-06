@@ -5,6 +5,7 @@
   become: no
   vars:
     bashrc: "{{ ansible_env.HOME }}/.bashrc"
+    bash_aliases: "{{ ansible_env.HOME }}/.bash_aliases"
 
   tasks:
     - name: Install required packages
@@ -15,13 +16,18 @@
           - bash-doc
         state: installed
       become: yes
-      tags:
-        - install_packages
 
     - name: copy over bashrc files
       copy:
         src: bashrc
         dest: "{{ bashrc }}"
+        backup: yes
+        mode: 640
+
+    - name: copy over bash_aliases files
+      copy:
+        src: bash_aliases
+        dest: "{{ bash_aliases }}"
         backup: yes
         mode: 640
         tags:
